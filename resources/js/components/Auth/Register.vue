@@ -21,7 +21,7 @@
       </div>
       <div>
         <button class="btn btn-primary m-2" @click.prevent="register()">Register</button> Or 
-        <router-link :to="{name: 'register'}" class="btn btn-primary m-2"> Go to Login</router-link>
+        <router-link :to="{name: 'login'}" class="btn btn-primary m-2"> Go to Login</router-link>
       </div>
     </div>
   </div>

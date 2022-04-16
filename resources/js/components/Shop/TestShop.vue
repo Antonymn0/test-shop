@@ -1,7 +1,7 @@
 <template>
     <div class="container pt-5">
         <div class="row justify-content-center align-items-center h-100">
-            <div class="col-md-10 my-auto">
+            <div class="col-md-11 my-auto">
                 <div class="card ">
                     <h2 class="card-header">
                         Products
@@ -53,7 +53,7 @@
                                 </tbody>
                                 <tbody v-else>
                                     <tr>
-                                        <td colspan="5" class="small text-muted text-center py-5">No items to show</td>                                        
+                                        <td colspan="5" class="small text-muted text-center py-5">No items found</td>                                        
                                     </tr>
                                 </tbody>
                             </table>
@@ -90,7 +90,7 @@
                 if(! this.author_name) { this.errors.author_name = "Please type author name"; return; }
                 axios.get('/api/search/products-by-author/' + this.author_name)
                 .then(response => {
-                    this.title = 'Search by author name results';
+                    this.title = 'Search product by author  results';
                     this.current_products = response.data.data.data;
                     this.author_name = null;
                 })
@@ -103,7 +103,7 @@
                 if(! this.product_name) { this.errors.product_name = "Please type product name"; return; }
                 axios.get('/api/search/products-by-product-name/' + this.product_name)
                 .then(response => {
-                    this.title = 'Search by product name results';
+                    this.title = 'Search product by  name results';
                     this.current_products = response.data.data.data;
                     this.product_name = null;
                 })
@@ -116,7 +116,7 @@
                 if(! this.date) { this.errors.date = "Please pick a date"; return; }
                 axios.get('/api/search/products-by-date/' + this.date)
                 .then(response => {
-                    this.title = `Search by date results (${this.date})`;
+                    this.title = `Search product by date results (${this.date})`;
                     this.current_products = response.data.data.data;
                     this.date = null;
                 })

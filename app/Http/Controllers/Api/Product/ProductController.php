@@ -112,7 +112,7 @@ class ProductController extends Controller
      */
     public function searchProductsByAuthorName(Request $request, $author_name)
     {
-        $products = Product::where('author_name', $author_name)->paginate(env('API_PAGINATION', 10));
+        $products = Product::where('author_name',  $author_name)->paginate(env('API_PAGINATION', 10));
         return response()->json([
             'success'=> true, 
             'message'=> 'Search by author results', 
@@ -125,7 +125,7 @@ class ProductController extends Controller
      */
     public function searchProductsByProductName(Request $request, $product_name)
     {
-        $products = Product::where('product_name', $product_name)->paginate(env('API_PAGINATION', 10));
+        $products = Product::where('product_name', strtolower( $product_name) )->paginate(env('API_PAGINATION', 10));
         return response()->json([
             'success'=> true, 
             'message'=> 'Search by product name results', 

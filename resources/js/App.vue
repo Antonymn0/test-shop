@@ -1,8 +1,8 @@
 <template>
-  <div class="mx-5 ">
+  <div class="mx-3 ">
       <div class=" py-3 border-bottom d-flex justify-content-between align-items-center">
         <span>
-            <h1>Test Shop</h1>
+            <h1> <a href="/">Test Shop</a> </h1>
         </span>
         <span v-if="!this.token">
             <router-link :to="{name: 'login'}" class="mx-2"> Login </router-link>
@@ -35,6 +35,7 @@ export default {
         if(response.status == 200)  this.$router.push({name: 'shop'})
       })
       .catch(error=>{
+        this.$router.push({name: 'login'});
         console.log(error.response);
       })
     },
