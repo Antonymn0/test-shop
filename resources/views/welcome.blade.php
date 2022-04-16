@@ -26,9 +26,8 @@
     </head>
     <body class="antialiased">
         {{------------ vue3 app here ----------------}}
-        <div id="app">
-            Dashboard             
-            <test-shop />
+        <div id="app">           
+            <App />
         </div>
 
         

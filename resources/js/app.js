@@ -1,17 +1,23 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+require("./bootstrap");
+import { createApp, } from "vue";
 
-require('./bootstrap');
-
-window.Vue = require('vue').default;
 window.axios = require("axios");
+axios.defaults.headers.common["Authorization"] =  "Bearer " + localStorage.getItem("test_token") || null;
+axios.interceptors.request.use(
+    (config) => {
+        let token = localStorage.getItem("test_token") || null;
+        if (token) config.headers["Authorization"] = `Bearer ${token}`;
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
 
-Vue.component('test-shop', require('./components/TestShop.vue').default);
+import router from "./Router/index.js";
 
+import App from "./App.vue";
 
-const app = new Vue({
-    el: '#app',
-});
+const app = createApp({});
+
+app.component("App", App).use(router).mount("#app");

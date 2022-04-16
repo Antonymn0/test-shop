@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-class UpdateUserRequest extends FormRequest
+
+class UpdateProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +25,9 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'full_name' => 'string',
-            'email' =>  ['email', Rule::unique('users')->ignore($this->user)]
+            'sku' => ['string', 'required', Rule::unique('products')->ignore($this->product)],
+            'product_name' => 'string|required',
+            'author_name' => 'string|required',
         ];
     }
 }

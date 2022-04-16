@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers\Api\User;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
+use App\Models\User;
+use Illuminate\Http\Request;
+use App\Events\User\userCreated;
+use App\Events\User\userUpdated;
+use App\Events\User\userDestroyed;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\User\ValidateUserRequest;
+use App\Http\Requests\User\UpdateUserRequest;
 
 class UserController extends Controller
 {
@@ -28,20 +33,22 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request\User\ValidateUserRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ValidateUserRequest $request)
     {
         $data = $request->validated();
 
         $data['password']  = Hash::make($data['password']);        
 
         $new_user= User::create($data);       
-        $credentials= [ 'email' => $new_user->email,  'password' => $data['password'] ];
+        $credentials= [ 'email' => $request->email,  'password' => $request->password ];
 
         $user =  Auth::attempt($credentials); // login user
-        $token = auth()->user()->createToken('token')->accessToken;        
+        $token = auth()->user()->createToken('token')->accessToken; 
+
+        event(new userCreated($new_user));
 
         return response()->json([
             'success'=> true,
@@ -69,16 +76,18 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request\User\UpdateUserRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, $id)
     {
         $data = $request->validated(); 
 
+        $user = User::findOrFail($id);
         $user->update($data);
-
+        
+        event(new UserUpdated($user));
         return response()->json([
             'success'=> true, 
             'message'=>'User updated successfuly', 
